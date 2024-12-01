@@ -3,7 +3,6 @@ const express = require("express");
 const mongoose = require("mongoose");
 const cloudinary = require("cloudinary").v2;
 const app = express();
-const axios = require("axios");
 const cors = require("cors");
 
 app.use(cors());
@@ -33,7 +32,6 @@ app.all("*", (req, res) => {
   return res.status(404).json("Not found");
 });
 
-// Mon serveur va écouter le port 3000
 const PORT = 4000;
 
 app.listen(process.env.PORT || PORT, () => {
