@@ -1,11 +1,11 @@
 const express = require("express");
 const router = express.Router();
 
-const userRoutes = require("./user");
+const usersRoutes = require("./users");
 const charactersRoutes = require("./characters");
 const comicsRoutes = require("./comics");
 
-router.use(userRoutes);
+router.use(usersRoutes);
 router.use(charactersRoutes);
 router.use(comicsRoutes);
 

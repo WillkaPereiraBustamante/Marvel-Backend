@@ -14,6 +14,8 @@ const User = require("../models/User");
 
 router.post("/user/signup", fileUpload(), async (req, res) => {
   try {
+    console.log(req);
+
     const user = await User.findOne({ email: req.body.email });
     if (user) {
       res.status(409).json({ message: "This email already has an account" });
@@ -59,6 +61,35 @@ router.post("/user/signup", fileUpload(), async (req, res) => {
         // l'utilisateur n'a pas envoyé les informations requises ?
         res.status(400).json({ message: "Missing parameters" });
       }
+    }
+  } catch (error) {
+    console.log(error.message);
+    res.status(500).json({ message: error.message });
+  }
+});
+
+router.post("/user/login", async (req, res) => {
+  try {
+    const user = await User.findOne({ email: req.body.email });
+
+    if (user) {
+      // Est-ce qu'il a rentré le bon mot de passe ?
+      // req.body.password
+      // user.hash
+      // user.salt
+      if (
+        SHA256(req.body.password + user.salt).toString(encBase64) === user.hash
+      ) {
+        res.status(200).json({
+          _id: user._id,
+          token: user.token,
+          account: user.account,
+        });
+      } else {
+        res.status(401).json({ error: "Unauthorized" });
+      }
+    } else {
+      res.status(400).json({ message: "User not found" });
     }
   } catch (error) {
     console.log(error.message);
